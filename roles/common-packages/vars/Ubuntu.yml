@@ -1,0 +1,10 @@
+---
+udev:
+  common:
+    packages:
+      - "mlocate"
+      - "vim"
+      - "nfs-common"
+      - "libxml-simple-perl"
+      - "libjson-perl"
+      - "libswitch-perl"

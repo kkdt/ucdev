@@ -1,0 +1,11 @@
+---
+
+- name: Source Linux distribution
+  include_vars: "{{ ansible_distribution }}.yml"
+
+- name: Packages
+  become: true
+  package:
+    name: "{{ udev.common.packages }}"
+    state: latest
+

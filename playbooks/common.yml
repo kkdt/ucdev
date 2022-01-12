@@ -1,0 +1,7 @@
+---
+
+- name: Common
+  hosts: all
+  gather_facts: true
+  roles:
+    - common-packages
