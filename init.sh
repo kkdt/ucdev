@@ -8,8 +8,9 @@ set -e
 # Help message
 help() {
   echo "$0 <options>"
-  echo "    -h | --help    Prints this help message"
-  echo "    --ansible      Installs Ansible"
+  echo "    -h | --help          Prints this help message"
+  echo "    ansible              Installs Ansible"
+  echo "    virtualbox-ext-pack  Installs virtualbox-ext-pack (virtualbox must be installed)"
 }
 
 #
@@ -24,6 +25,19 @@ ubuntu_ansible() {
   apt install software-properties-common
   add-apt-repository --yes --update ppa:ansible/ansible
   apt install -y ansible
+}
+
+#
+# Installs virtualbox-ext-pack on Ubuntu system
+ubuntu_virtualbox-ext-pack() {
+  set +e
+  vbox-img --version
+  if [ $? -eq 0 ]; then
+    set -e
+    apt install -y virtualbox-ext-pack
+  else
+    echo "Please install virtualbox"
+  fi
 }
 
 #
@@ -42,9 +56,9 @@ fi
 
 while [ "$1" != "" ]; do
   case "$1" in
-  --ansible|--vagrant)
+  ansible|virtualbox-ext-pack)
     __linux=$(init | tr -d '"')
-    __software=`echo $1 | cut -d '-' -f3`" ${__software}"
+    __software="${1} ${__software}"
     ;;
 
   *)
@@ -64,5 +78,10 @@ for item in ${__software}; do
     fi
     ;;
 
+  virtualbox-ext-pack)
+    if [ "${__linux}" == "Ubuntu" ]; then
+      ubuntu_virtualbox-ext-pack
+    fi
+    ;;
   esac
 done
