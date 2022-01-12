@@ -1,0 +1,19 @@
+---
+
+- name: Check version
+  shell: "vagrant --version"
+  register: vagrantversion
+  ignore_errors: yes
+
+- debug:
+    var: vagrantversion
+
+- name: Repository
+  script: "{{ ansible_distribution }}-vagrant.sh"
+  when: vagrantversion.failed
+
+- name: Packages
+  become: true
+  package:
+    name: "{{ ucdev.vagrant.packages }}"
+    state: latest

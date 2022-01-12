@@ -1,0 +1,4 @@
+ucdev:
+  vagrant:
+    packages:
+      - vagrant

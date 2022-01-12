@@ -14,7 +14,8 @@ help() {
   echo "    --user       User full name enclosed by double quotes (default ${USER})"
   echo "    --email      User email addressed (default ${USER}@email.com)"
   echo "    Configuration Options"
-  echo "        common   Base configurations"
+  echo "        common        Base configurations"
+  echo "        vbox-vagrant  Virtualbox and Vagrant configurations"
 }
 
 if [ $# -eq 0 -o "$1" == "-h" -o "$1" == "--help" -o "$1" == "help" ]; then

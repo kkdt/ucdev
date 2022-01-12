@@ -1,0 +1,7 @@
+---
+
+- name: VirtualBox and Vagrant
+  hosts: all
+  roles:
+    - virtualbox
+    - vagrant
