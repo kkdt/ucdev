@@ -1,0 +1,18 @@
+[color]
+    ui = auto
+[fetch]
+    prune = true
+[core]
+    filemode = false
+    editor = vim
+[status]
+    showUntrackedFiles = all
+[alias]
+    lol = log --graph --decorate --oneline
+    lola = log --graph --decorate --oneline --all
+    lolf = log --follow --decorate --oneline
+    ls = log --pretty=format:%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn] --decorate
+
+# Allows to toggle different configurations to toggle the [user] tag if you want to distinguish the user on commits
+[includeIf "gitdir:~/Development/projects/"]
+  path = ~/.gitconfig-user

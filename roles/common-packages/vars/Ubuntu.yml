@@ -1,5 +1,5 @@
 ---
-udev:
+ucdev:
   common:
     packages:
       - "mlocate"

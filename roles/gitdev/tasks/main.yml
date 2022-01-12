@@ -1,0 +1,55 @@
+---
+
+- name: Source Linux distribution
+  include_vars: "{{ ansible_distribution }}.yml"
+
+- name: Packages
+  become: true
+  package:
+    name: "{{ ucdev.git.packages }}"
+    state: latest
+
+- name: git-prompt
+  copy:
+    src: "{{ ucdev.git.git_prompt }}"
+    dest: "/home/{{ ansible_user_id }}/.git-prompt.sh"
+    remote_src: yes
+
+- name: git-completion
+  copy:
+    src: "{{ ucdev.git.git_completion }}"
+    dest: "/home/{{ ansible_user_id }}/.git-completion.bash"
+    remote_src: yes
+
+- name: gitrc
+  copy:
+    src: "gitrc"
+    dest: "/home/{{ ansible_user_id }}/.gitrc"
+    remote_src: false
+
+- name: Source gitrc
+  shell: "echo \"source ~/.gitrc\" >> /home/{{ ansible_user_id }}/.bashrc"
+
+- name: gitconfig
+  copy:
+    src: "gitconfig"
+    dest: "/home/{{ ansible_user_id }}/.gitconfig"
+    remote_src: false
+
+- name: gitconfig-user
+  copy:
+    src: "gitconfig-user"
+    dest: "/home/{{ ansible_user_id }}/.gitconfig-user"
+    remote_src: false
+
+- name: Update gitconfig-user (username)
+  ansible.builtin.replace:
+    path: "/home/{{ ansible_user_id }}/.gitconfig-user"
+    regexp: 'ZZZZZNAMEZZZZZ'
+    replace: "{{ user_name }}"
+
+- name: Update gitconfig-user (email)
+  ansible.builtin.replace:
+    path: "/home/{{ ansible_user_id }}/.gitconfig-user"
+    regexp: 'ZZZZZEMAILZZZZZ'
+    replace: "{{ user_email }}"

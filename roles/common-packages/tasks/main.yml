@@ -6,6 +6,6 @@
 - name: Packages
   become: true
   package:
-    name: "{{ udev.common.packages }}"
+    name: "{{ ucdev.common.packages }}"
     state: latest
 
