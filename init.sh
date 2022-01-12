@@ -10,7 +10,6 @@ help() {
   echo "$0 <options>"
   echo "    -h | --help    Prints this help message"
   echo "    --ansible      Installs Ansible"
-  echo "    --vagrant      Installs Vagrant"
 }
 
 #
@@ -25,14 +24,6 @@ ubuntu_ansible() {
   apt install software-properties-common
   add-apt-repository --yes --update ppa:ansible/ansible
   apt install -y ansible
-}
-
-#
-# Installs Vagrant on Ubuntu system
-ubuntu_vagrant() {
-  curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
-  apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-  apt-get install vagrant
 }
 
 #
@@ -73,10 +64,5 @@ for item in ${__software}; do
     fi
     ;;
 
-  vagrant)
-    if [ "${__linux}" == "Ubuntu" ]; then
-      ubuntu_vagrant
-    fi
-    ;;
   esac
 done

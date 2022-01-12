@@ -1,0 +1,31 @@
+---
+
+- name: Check version
+  shell: "vbox-img --version"
+  register: vboxversion
+  ignore_errors: yes
+
+- debug:
+    var: vboxversion
+
+- name: Repository
+  script: "{{ ansible_distribution }}-vbox.sh"
+  when: vboxversion.failed
+
+- name: Packages
+  become: true
+  package:
+    name: "{{ ucdev.virtualbox.packages }}"
+    state: latest
+
+- name: List ExtPacks
+  shell: "VBoxManage list extpacks"
+  register: extpacks
+  ignore_errors: yes
+
+- debug:
+    var: extpacks
+
+- name: virtualbox-ext-pack
+  debug:
+    msg: "(optional) Manually install virtualbox-ext-pack"

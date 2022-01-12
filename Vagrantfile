@@ -65,16 +65,23 @@ Vagrant.configure("2") do |config|
 
   # Software to to provision with Vagrant but is default disabled
 
+  # https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-ansible-on-ubuntu
   config.vm.provision "ansible", run: "never", type: "shell", inline: <<-SHELL
     apt install software-properties-common
     add-apt-repository --yes --update ppa:ansible/ansible
     apt install -y ansible
   SHELL
 
+  config.vm.provision "virtualbox", run: "never", type: "shell", inline: <<-SHELL
+    curl -fsSL https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo apt-key add -
+    sudo apt-add-repository "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) main"
+    sudo apt-get update -y && sudo apt-get install -y virtualbox
+  SHELL
+
   config.vm.provision "vagrant", run: "never", type: "shell", inline: <<-SHELL
     curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
     sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-    sudo apt-get update && sudo apt-get install vagrant
+    sudo apt-get update -y && sudo apt-get install vagrant
   SHELL
 
 end

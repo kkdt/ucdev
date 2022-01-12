@@ -1,0 +1,5 @@
+ucdev:
+  virtualbox:
+    packages:
+      - virtualbox
+      - virtualbox-guest-additions-iso
