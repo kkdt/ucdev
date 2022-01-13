@@ -8,3 +8,4 @@ ucdev:
       - "libxml-simple-perl"
       - "libjson-perl"
       - "libswitch-perl"
+      - "cifs-utils"

@@ -12,6 +12,10 @@
     lola = log --graph --decorate --oneline --all
     lolf = log --follow --decorate --oneline
     ls = log --pretty=format:%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn] --decorate
+[remote "origin"]
+    fetch = +refs/heads/*:refs/remotes/origin/*
+[http]
+    sslVerify = false
 
 # Allows to toggle different configurations to toggle the [user] tag if you want to distinguish the user on commits
 [includeIf "gitdir:~/Development/projects/"]
