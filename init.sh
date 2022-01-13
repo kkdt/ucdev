@@ -50,6 +50,7 @@ ubuntu_virtualbox-ext-pack() {
 # Installs Ansible on a CentOS system
 centos_ansible() {
   set +e
+  yum search ansible
   if [ $? -ne 0 ]; then
     set -e
     apt install software-properties-common
@@ -78,7 +79,8 @@ fi
 while [ "$1" != "" ]; do
   case "$1" in
   ansible|virtualbox-ext-pack)
-    __linux=$(init | tr -d '"')
+    __linux=$(egrep '^ID=' /etc/os-release | cut -d '=' -f2 | tr -d '"')
+    __linuxversion=$(egrep '^VERSION_ID=' /etc/os-release | cut -d '=' -f2 | tr -d '"')
     __software="${1} ${__software}"
     ;;
 
@@ -90,6 +92,16 @@ while [ "$1" != "" ]; do
   esac
   shift
 done
+
+# centos-specific
+if [ "${__linux}" == "centos" ]; then
+  yum -y install epel-release
+  if [ "${__linuxversion}" == "7" ]; then
+    yum -y install "https://packages.endpoint.com/rhel/${__linuxversion}/os/x86_64/endpoint-repo-1.9-1.x86_64.rpm"
+  elif [ "${__linuxversion}" == "6" ]; then
+    yum -y install "https://packages.endpoint.com/rhel/${__linuxversion}/os/x86_64/endpoint-repo-1.6-2.x86_64.rpm "
+  fi
+fi
 
 for item in ${__software}; do
   case "$item" in

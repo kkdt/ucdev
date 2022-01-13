@@ -1,0 +1,8 @@
+---
+ucdev:
+  git:
+    packages:
+      - "git-all"
+      - "git"
+    git_prompt: /usr/share/git-core/contrib/completion/git-prompt.sh
+    git_completion: /usr/share/doc/git-2.34.1/contrib/completion/git-completion.bash
