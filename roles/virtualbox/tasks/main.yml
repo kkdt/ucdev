@@ -9,8 +9,12 @@
     var: vboxversion
 
 - name: Repository
+  become: true
   script: "{{ ansible_distribution }}-vbox.sh"
   when: vboxversion.failed
+
+- name: Source Linux distribution
+  include_vars: "{{ ansible_distribution }}.yml"
 
 - name: Packages
   become: true

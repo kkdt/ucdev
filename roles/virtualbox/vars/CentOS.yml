@@ -1,0 +1,5 @@
+ucdev:
+  virtualbox:
+    packages:
+      - VirtualBox-6.1.x86_64
+#      - vboxguest-tools.x86_64

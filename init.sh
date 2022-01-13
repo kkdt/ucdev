@@ -94,6 +94,8 @@ while [ "$1" != "" ]; do
 done
 
 # centos-specific
+# https://yum.oracle.com/faq.html#a10
+# https://yum.oracle.com/getting-started.html#installing-software-from-oracle-linux-yum-server
 if [ "${__linux}" == "centos" ]; then
   yum -y install epel-release
   if [ "${__linuxversion}" == "7" ]; then
