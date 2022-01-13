@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# https://www.vagrantup.com/docs/other/environmental-variables#vagrant_home
+__vagranthome="${HOME}/.vagrant.d"
+
+if [ ! -d "${__vagranthome}" ]; then
+  mkdir -p "${__vagranthome}"
+fi
+
+export VAGRANT_HOME=${__vagranthome}

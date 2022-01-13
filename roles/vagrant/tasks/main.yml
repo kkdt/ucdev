@@ -17,3 +17,17 @@
   package:
     name: "{{ ucdev.vagrant.packages }}"
     state: latest
+
+- name: vagrantrc
+  copy:
+    src: "vagrantrc"
+    dest: "/home/{{ ansible_user_id }}/.vagrantrc"
+    remote_src: no
+    backup: yes
+
+- name: Update .bashrc
+  lineinfile:
+    path: "/home/{{ ansible_user_id }}/.bashrc"
+    backup: yes
+    regexp: '^source ~/.vagrantrc'
+    line: "source ~/.vagrantrc"

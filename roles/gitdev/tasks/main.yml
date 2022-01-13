@@ -14,33 +14,42 @@
     src: "{{ ucdev.git.git_prompt }}"
     dest: "/home/{{ ansible_user_id }}/.git-prompt.sh"
     remote_src: yes
+    backup: yes
 
 - name: git-completion
   copy:
     src: "{{ ucdev.git.git_completion }}"
     dest: "/home/{{ ansible_user_id }}/.git-completion.bash"
     remote_src: yes
+    backup: yes
 
 - name: gitrc
   copy:
     src: "gitrc"
     dest: "/home/{{ ansible_user_id }}/.gitrc"
-    remote_src: false
+    remote_src: no
+    backup: yes
 
 - name: Source gitrc
-  shell: "echo \"source ~/.gitrc\" >> /home/{{ ansible_user_id }}/.bashrc"
+  lineinfile:
+    path: "/home/{{ ansible_user_id }}/.bashrc"
+    backup: yes
+    regexp: '^source ~/.gitrc'
+    line: "source ~/.gitrc"
 
 - name: gitconfig
   copy:
     src: "gitconfig"
     dest: "/home/{{ ansible_user_id }}/.gitconfig"
     remote_src: false
+    backup: yes
 
 - name: gitconfig-user
   copy:
     src: "gitconfig-user"
     dest: "/home/{{ ansible_user_id }}/.gitconfig-user"
-    remote_src: false
+    remote_src: no
+    backup: yes
 
 - name: Update gitconfig-user (username)
   ansible.builtin.replace:
