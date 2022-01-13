@@ -1,0 +1,9 @@
+{
+  "server": {
+    "box":"ubuntu/focal64",
+    "id" : "ubuntu-focal",
+    "hostname": "ubuntu-focal",
+    "memory": 1024,
+    "cpus":1
+  }
+}

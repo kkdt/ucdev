@@ -10,11 +10,30 @@ Vagrant.configure("2") do |config|
   # For a complete reference, please see the online documentation at
   # https://docs.vagrantup.com.
 
-  # Every Vagrant development environment requires a box. You can search for
-  # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "ubuntu/focal64"
-  config.vm.hostname = "ubuntu-focal64"
-  config.vm.define "ubuntu-focal64"
+  config.ssh.forward_x11 = true
+  config.ssh.insert_key = false
+  config.ssh.keep_alive = true
+
+  Dir.glob('servers/*.json') do |file|
+    json = (JSON.parse(File.read(file)))['server']
+    id = json.has_key?("id") ? json["id"] : "vagrant"
+    hostname = json.has_key?("hostname") ? json["hostname"] : "vagrant"
+    memory = json.has_key?("memory") ? json["memory"] : 512
+    cpus = json.has_key?("cpus") ? json["cpus"] : 1
+
+    config.vm.define id do |server|
+      server.vm.box = json['box']
+      server.vm.hostname = hostname
+      server.vm.define id
+
+      server.vm.provider "virtualbox" do |vb|
+        vb.gui = false
+        vb.name = id
+        vb.memory = memory
+        vb.cpus = cpus
+      end
+    end
+  end
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -47,20 +66,9 @@ Vagrant.configure("2") do |config|
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
 
-  # Provider-specific configuration so you can fine-tune various
-  # backing providers for Vagrant. These expose provider-specific options.
-  # Example for VirtualBox:
-  #
-  config.vm.provider "virtualbox" do |vb|
-    vb.gui = false
-    vb.memory = "1024"
-    vb.name = "ubuntu-focal64"
-    vb.cpus = 1
-  end
-
   config.vm.provision "sshd", type: "shell", inline: <<-SHELL
     sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
-    systemctl restart sshd
+    service sshd restart
   SHELL
 
   # Software to to provision with Vagrant but is default disabled

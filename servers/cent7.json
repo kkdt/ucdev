@@ -1,0 +1,10 @@
+{
+  "server": {
+    "box": "geerlingguy/centos7",
+    "id" : "cent7",
+    "hostname": "cent7",
+    "memory": 1024,
+    "cpus":1,
+    "network" : {}
+  }
+}

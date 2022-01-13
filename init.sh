@@ -16,19 +16,24 @@ help() {
 #
 # Find the Linux distribution
 init() {
-  egrep '^NAME' /etc/os-release | cut -d '=' -f2
+  egrep '^ID=' /etc/os-release | cut -d '=' -f2 | tr -d '"'
 }
 
 #
-# Installs Ansible on Ubuntu system
+# Installs Ansible on an Ubuntu system
 ubuntu_ansible() {
-  apt install software-properties-common
-  add-apt-repository --yes --update ppa:ansible/ansible
+  __results=$(apt-cache search --names-only "^ansible$")
+  if [ -z "${__results}" ]; then
+    apt install software-properties-common
+    add-apt-repository --yes --update ppa:ansible/ansible
+  else
+    echo "Ansible found in existing repository"
+  fi
   apt install -y ansible
 }
 
 #
-# Installs virtualbox-ext-pack on Ubuntu system
+# Installs virtualbox-ext-pack on an Ubuntu system
 ubuntu_virtualbox-ext-pack() {
   set +e
   vbox-img --version
@@ -36,8 +41,24 @@ ubuntu_virtualbox-ext-pack() {
     set -e
     apt install -y virtualbox-ext-pack
   else
+    set -e
     echo "Please install virtualbox"
   fi
+}
+
+#
+# Installs Ansible on a CentOS system
+centos_ansible() {
+  set +e
+  if [ $? -ne 0 ]; then
+    set -e
+    apt install software-properties-common
+    add-apt-repository --yes --update ppa:ansible/ansible
+  else
+    set -e
+    echo "Ansible found in existing repository"
+  fi
+  yum install -y ansible
 }
 
 #
@@ -73,13 +94,15 @@ done
 for item in ${__software}; do
   case "$item" in
   ansible)
-    if [ "${__linux}" == "Ubuntu" ]; then
+    if [ "${__linux}" == "ubuntu" ]; then
       ubuntu_ansible
+    elif [ "${__linux}" == "centos" ]; then
+      centos_ansible
     fi
     ;;
 
   virtualbox-ext-pack)
-    if [ "${__linux}" == "Ubuntu" ]; then
+    if [ "${__linux}" == "ubuntu" ]; then
       ubuntu_virtualbox-ext-pack
     fi
     ;;
